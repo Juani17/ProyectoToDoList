@@ -23,10 +23,17 @@ app.use('/sprints', sprintRoutes);
 app.use('/backlog', backlogRoutes);
 
 //Me conecto a MongoDB
+// Conecto a Mongo pero no detengo el servidor si falla
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(PORT, () =>
-      console.log(`Servidor escuchando en puerto ${PORT}`)
-    );
+    console.log('✅ Conectado a MongoDB');
   })
-  .catch(err => console.error('Error al conectar a MongoDB', err));
+  .catch(err => {
+    console.error('❌ Error al conectar a MongoDB', err.message);
+  });
+
+// El servidor se inicia igual
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor escuchando en puerto ${PORT}`);
+});
+
